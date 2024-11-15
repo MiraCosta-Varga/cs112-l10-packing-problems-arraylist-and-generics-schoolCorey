@@ -1,4 +1,5 @@
-public class Inventory {
+import java.util.List;
+ public class Inventory <T extends Supplies> {
 
 	/*     STEP 3 
 	*        
@@ -8,6 +9,30 @@ public class Inventory {
 	*
 	*      Go to Transfer.java for STEP 4
 	*/
+
+	//Generic instance var
+	private T t;
+	
+	public Inventory(){
+		
+	}
+
+	public Inventory(T t) {
+		setAll(t);
+	}
+
+	public void setObject(T t) {
+		this.t = t;
+	}
+
+	public T getObject() {
+		return t;
+	}
+
+	public void setAll(T t){
+		setObject(t);
+	}
+
 
 	/*     STEP 5
 	*
@@ -20,6 +45,25 @@ public class Inventory {
 	*      input String "name", use the indexOf() method to return the 
 	*      index. If no match is found, return -1. 
 	*/
+	public int searchByName(List<T> list, String name) {
+		name = name.trim(); //from demo, removes whitespace from name
+		for (int i = 0; i < list.size(); i++) {
+			if (list.get(i).getName().equalsIgnoreCase(name)) {
+				return i;
+			}
+		}
+		/* from demo: enhanced for would have worked as well:
+
+		for (T element : list) {
+			if (element.getName().equalsIgnoreCase(name)) {
+				return list.indexOf(element);
+			}
+		}
+
+		*/
+		System.out.println("No such item found"); //From demo, good to have
+		return -1;
+	}
 
 
 	/*     STEP 7:
@@ -43,5 +87,21 @@ public class Inventory {
 	*      match the quantity in the list, then update using .setQuantity
 	*      and return the object with the new quantity.
 	*/
+
+	public T ceckQty(List<T> list, String name, int desiredQuantity){
+		int index = searchByName(list, name);
+		if (index ==-1){
+			System.out.println(name + " not found."); //demo: maybe throw an exception here.
+			return null;
+		}
+		T found = list.get(index);
+		if (found.getQuantity() == desiredQuantity) {
+			System.out.println("Quantity of " + found.getName() + " already " + desiredQuantity + ".");
+		} else {
+			found.setQuantity(desiredQuantity);
+		}
+
+		return found;
+	}
 
 }
